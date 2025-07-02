@@ -1,0 +1,9 @@
+[project]
+name = "pypreader-mcp"
+version = "0.1.0"
+description = "Python Package Reader MCP Server"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "fastmcp>=2.10.1",
+]
