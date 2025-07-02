@@ -7,8 +7,9 @@ from fastmcp.client.transports import UvxStdioTransport
 
 transport = UvxStdioTransport(
     from_package="git+https://github.com/zakahan/pypreader-mcp.git",
-    tool_name="pypreader-mcp"
-)   
+    tool_name="pypreader-mcp",
+)
+
 
 async def main():
     async with Client(transport) as client:

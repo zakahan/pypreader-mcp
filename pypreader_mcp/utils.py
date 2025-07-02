@@ -1,17 +1,18 @@
 import os.path
-import importlib.util
 
 
-def get_package_path(package_name: str):
-    spec = importlib.util.find_spec(package_name)
-    if spec is None:
-        raise ImportError(f"Package {package_name} not found.")
-    if spec.origin == "built-in":  # Handle built - in modules (such as sys, os)
-        raise ImportError(
-            f"Package {package_name} is a built-in module and cannot be imported."
+def get_package_path(package_name: str, site_package_path: str):
+    # 确定site_package_path中是否有site-packages文件夹，如果没有就报错，如果有就返回site-packages文件夹的绝对路径
+    if not os.path.exists(site_package_path):
+        raise ValueError(
+            f"Python environment not found: {site_package_path}. Please check the path."
         )
-    path = os.path.dirname(spec.origin)
-    return path
+
+    if not os.path.exists(os.path.join(site_package_path, package_name)):
+        raise ValueError(
+            f"Package {package_name} not found in {site_package_path}. Please check the package name."
+        )
+    return os.path.join(site_package_path, package_name)
 
 
 # Define the directory names to be filtered
@@ -79,9 +80,3 @@ def list_directory_contents(directory):
     except Exception as e:
         return f"An unknown error occurred: {e}"
     return result  # Return the result list
-
-
-if __name__ == "__main__":
-    x = get_package_path("requests")
-    y = list_directory_contents(x)
-    print(y)
