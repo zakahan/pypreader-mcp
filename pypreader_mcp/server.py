@@ -27,14 +27,14 @@ arg_parser.add_argument(
 args = arg_parser.parse_args()
 
 
-# 配置日志
+# Configure logging
 logging.basicConfig(
     level=getattr(logging, args.logging_level),
     format="pypreader-mcp: %(levelname)s - %(message)s",
 )
 
 
-# 检查是否使用默认值
+# Check if the default value is used
 if args.python_path == sys.executable:
     logging.info(f"Using default Python path: {args.python_path}")
 
@@ -48,7 +48,7 @@ def check_python_path() -> str:
             f"Python environment not found: {args.python_path}. Please check the path."
         )
 
-    # 检查文件是否可执行
+    # Check if the file is executable
     if not os.access(args.python_path, os.X_OK):
         raise PermissionError(
             f"The file {args.python_path} is not executable. Please check the file permissions."
@@ -56,12 +56,12 @@ def check_python_path() -> str:
 
     try:
         result = subprocess.run(
-            [args.python_path, "-V"],  # 命令及参数列表
-            capture_output=True,  # 捕获标准输出
-            text=True,  # 以文本形式返回
-            check=True,  # 若命令失败则抛出异常
+            [args.python_path, "-V"],
+            capture_output=True,
+            text=True,
+            check=True,
         )
-        # 同时检查标准输出和标准错误输出
+        # Check both standard output and standard error output simultaneously
         output = result.stdout.strip() or result.stderr.strip()
         if not re.match(r"Python \d+\.\d+\.\d+", output):
             raise ValueError(

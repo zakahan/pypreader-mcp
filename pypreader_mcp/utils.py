@@ -2,7 +2,8 @@ import os.path
 
 
 def get_package_path(package_name: str, site_package_path: str):
-    # 确定site_package_path中是否有site-packages文件夹，如果没有就报错，如果有就返回site-packages文件夹的绝对路径
+    # Determine if there is a site-packages folder in site_package_path.
+    # If not, report an error. If there is, return the absolute path of the site-packages folder.
     if not os.path.exists(site_package_path):
         raise ValueError(
             f"Python environment not found: {site_package_path}. Please check the path."

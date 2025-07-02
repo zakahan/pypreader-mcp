@@ -5,7 +5,7 @@
 [![Python Version](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-一个实现了模型上下文协议（MCP）的 Python 包读取服务器。该服务器允许大语言模型（LLMs）和其他 AI 代理检查指定环境中 Python 包的内容。
+一个实现了模型上下文协议（MCP）的 Python 包读取Server。该Server允许大语言模型（LLMs）和其他 AI 代理检查指定环境中 Python 包的内容。
 
 ## 概述
 
@@ -19,7 +19,7 @@
 
 ## 功能
 
-该服务器向 MCP 客户端提供以下工具：
+该Server向 MCP 客户端提供以下工具：
 
 - `get_pypi_description(package_name: str)`：从 PyPI 获取包的官方描述。
 - `get_package_directory(package_name: str)`：列出指定已安装包的整个文件和目录结构。
@@ -27,11 +27,11 @@
 
 ## 用法
 
-此工具旨在作为一个 MCP 服务器，在诸如 [Cursor](https://cursor.sh/) 或 [Trae](https://trae.ai/) 等基于 AI 的环境中使用。它不适合直接克隆并手动运行。
+此工具旨在作为一个 MCP Server，在诸如 [Cursor](https://cursor.sh/) 或 [Trae](https://trae.ai/) 等基于 AI 的环境中使用。它不适合直接克隆并手动运行。
 
 ### 配置
 
-在你的 AI 环境的 MCP 服务器配置中，添加一个具有以下设置的新服务器。这允许 AI 使用 `uvx` 直接从其 Git 存储库运行服务。
+在你的 AI 环境的 MCP Server配置中，添加一个具有以下设置的新Server。这允许 AI 使用 `uvx` 直接从其 Git 存储库运行服务。
 
 ```json
 {
@@ -58,12 +58,12 @@
     - `pypreader-mcp`：要运行的控制台脚本的名称（在 `pyproject.toml` 中定义）。
     - `--python_path`：**至关重要的是**，你必须提供你希望 AI 检查的环境的 Python 可执行文件的绝对路径。这可能是你项目的虚拟环境。
 
-### 服务器参数
+### MCP-Server参数
 
-在你的 AI 环境中配置 MCP 服务器时，你可以指定以下命令行参数：
+在你的 AI 环境中配置 MCP Server时，你可以指定以下命令行参数：
 
-- `--python_path`：指定目标包安装环境的 Python 可执行文件的路径。如果未提供，它将默认为运行服务器的 Python 可执行文件。你可以通过激活项目的 Python 环境并在终端中运行 `which python` 来找到正确的路径。
-- `--logging_level`：设置服务器的日志记录级别。选项有 `DEBUG`、`INFO`、`WARNING`、`ERROR`、`CRITICAL`。默认值是 `INFO`。
+- `--python_path`：指定目标包安装环境的 Python 可执行文件的路径。如果未提供，它将默认为运行Server的 Python 可执行文件。你可以通过激活项目的 Python 环境并在终端中运行 `which python` 来找到正确的路径。
+- `--logging_level`：设置Server的日志记录级别。选项有 `DEBUG`、`INFO`、`WARNING`、`ERROR`、`CRITICAL`。默认值是 `INFO`。
 
 如果你使用 Python 虚拟环境来配置 Python 项目，通常，你需要随时修改 `python_path`，以切换到你指定的 Python 环境。
 
@@ -84,7 +84,7 @@
 
 ### 使用客户端进行测试
 
-如果你想测试我的这个服务或了解其功能，可以使用像 `fastmcp` 这样的client。`examples/fastmcp_client.py` 中的代码演示了如何连接到服务器并调用其工具。
+如果你想测试我的这个服务或了解其功能，可以使用像 `fastmcp` 这样的client。`examples/fastmcp_client.py` 中的代码演示了如何连接到Server并调用其工具。
 
 ## 开发
 
