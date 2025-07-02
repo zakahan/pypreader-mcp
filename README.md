@@ -1,5 +1,7 @@
 # pypreader-mcp
 
+[English](./README.md) | [简体中文](./README_zh.md)
+
 [![Python Version](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
@@ -8,6 +10,12 @@ A Python Package Reader server implementing the Model Context Protocol (MCP). Th
 ## Overview
 
 `pypreader-mcp` acts as a bridge between an AI model and a local Python environment. By exposing a set of tools through the Model Context Protocol, it enables the AI to programmatically browse installed packages, view their file structure, and read their source code. This is useful for tasks like code analysis, dependency inspection, and automated programming assistance.
+
+### Why do this?
+
+When I use AI-integrated programming IDEs such as Cursor or Trae, I always find that the currently used model is not aware of the third - party libraries I need. Sometimes, when they search the Internet, it's always a mess and it's difficult to find any useful information. 
+
+So I made this MCP server. It can read the documentation from the official website pypi.org or read the source code in your Python's site - packages environment, in order to more directly understand the content of the third - party library you want to use.
 
 ## Features
 
@@ -57,27 +65,22 @@ When configuring the MCP server in your AI environment, you can specify the foll
 -   `--python_path`: Specifies the path to the Python executable of the environment where your target packages are installed. If not provided, it defaults to the Python executable running the server. You can find the correct path by activating your project's Python environment and running `which python` in your terminal.
 -   `--logging_level`: Sets the logging level for the server. Options are `DEBUG`, `INFO`, `WARNING`, `ERROR`, `CRITICAL`. The default is `INFO`.
 
-**Example Configuration with Parameters:**
+If you use a Python virtual environment to configure a Python project, generally, you need to modify the python_path at any time to switch to the Python environment you specified.
 
-```json
-{
-    "name": "pypreader-mcp",
-    "command": [
-        "python",
-        "-m",
-        "pypreader_mcp.server",
-        "--python_path",
-        "/path/to/your/project/venv/bin/python",
-        "--logging_level",
-        "DEBUG"
-    ],
-    "mac_command": [],
-    "linux_command": [],
-    "windows_command": [],
-    "env": {},
-    "working_directory": "/path/to/pypreader-mcp"
-}
-```
+### AI-Coding Example
+
+Take Trae as an example. Currently (2025-07-02), the doubao-seed-1.6 model doesn't know about the `fastmcp` package(In fact, most models don't recognize it either). In the normal process, it would either pretend to know and output a bunch of messy and indescribable hallucinations, or it would do a hard search and find all kinds of messy things. 
+
+This time, I created a Trae Agent, which is equipped with the mcp-server of this project. As a result, Trae can understand my project and then write the service of fastmcp to complete my task. 
+
+**This is the whole process of Trae completing the task I requested**
+
+![trae_examples](./assets/images/trae_example.png)
+
+**These are the specific details of the tool call**
+
+![tools](./assets/images/tools_call_response.png)
+
 
 ### Testing with a Client
 
@@ -128,7 +131,7 @@ if __name__ == "__main__":
     ```bash
     git clone https://github.com/your-username/pypreader-mcp.git
     cd pypreader-mcp
-    python -m venv .venv
+    uv venv --python 3.10
     source .venv/bin/activate
     ```
 
