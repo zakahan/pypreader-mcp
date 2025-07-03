@@ -25,6 +25,12 @@ async def main():
             name="get_package_directory", arguments={"package_name": "fastmcp"}
         )
         print(result)
+        print("> 3. get_symbol_definition:")
+        result = await client.call_tool(
+            name="get_symbol_definition",
+            arguments={"package_name": "requests", "symbol_name": "Session"},
+        )
+        print(result)
 
 
 if __name__ == "__main__":
