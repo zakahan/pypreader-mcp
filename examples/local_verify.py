@@ -1,20 +1,20 @@
-import sys
+import os
 import asyncio
 from fastmcp import Client
-from fastmcp.client.transports import UvxStdioTransport
+from fastmcp.client.transports import StdioTransport
 
-
-transport = UvxStdioTransport(
-    from_package="git+https://github.com/zakahan/pypreader-mcp.git",
-    tool_name="pypreader-mcp",
-    env_vars={
-        "python_path": sys.executable,
-        "logging_level": "ERROR",
-    },
+transport = StdioTransport(
+    command="python",
+    args=[
+        "-m",
+        "pypreader_mcp.server",
+    ],
+    cwd=os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
 )
 
 
 async def main():
+    # Connect via stdio to a local script
     async with Client(transport) as client:
         print("> 1. List tools:")
         result = await client.list_tools()
@@ -28,11 +28,10 @@ async def main():
         print("> 3. get_symbol_definition:")
         result = await client.call_tool(
             name="get_symbol_definition",
-            arguments={"package_name": "requests", "symbol_name": "Session"},
+            arguments={"package_name": "mcp.types", "symbol_name": "CallToolResult"},
         )
         print(result)
 
 
 if __name__ == "__main__":
-    # uvx --from git+https://github.com/zakahan/pypreader-mcp.git pypreader-mcp --python_path xxxxx --logging_level ERROR
     asyncio.run(main())
