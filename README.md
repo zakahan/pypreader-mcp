@@ -21,9 +21,10 @@ So I made this MCP server. It can read the documentation from the official websi
 
 The server provides the following tools to an MCP client:
 
--   `get_pypi_description(package_name: str)`: Fetches the official description of a package from PyPI.
--   `get_package_directory(package_name: str)`: Lists the entire file and directory structure of a specified installed package.
--   `get_source_code(package_path: str)`: Retrieves the full source code of a specific file within a package.
+- `get_pypi_description(package_name: str)`: Fetches the official description of a package from PyPI.
+- `get_package_directory(package_name: str)`: Lists the entire file and directory structure of a specified installed package.
+- `get_source_code(package_path: str)`: Retrieves the full source code of a specific file within a package.
+- `get_symbol_definition(package_path: str, symbol_name: str)`: Get the definition (code segment) of the specified symbol (function, class, etc.).
 
 ## Usage
 
@@ -52,18 +53,18 @@ In your AI environment's MCP server configuration, add a new server with the fol
 
 **Configuration Details**:
 
--   **`command`**: Should be `uvx`, which is a tool for running Python applications from various sources.
--   **`args`**: 
-    -   `--from git+https://github.com/zakahan/pypreader-mcp.git`: Tells `uvx` to fetch the package from this Git repository.
-    -   `pypreader-mcp`: The name of the console script to run (defined in `pyproject.toml`).
-    -   `--python_path`: **Crucially**, you must provide the absolute path to the Python executable of the environment you want the AI to inspect. This could be your project's virtual environment.
+- **`command`**: Should be `uvx`, which is a tool for running Python applications from various sources.
+- **`args`**: 
+  - `--from git+https://github.com/zakahan/pypreader-mcp.git`: Tells `uvx` to fetch the package from this Git repository.
+  - `pypreader-mcp`: The name of the console script to run (defined in `pyproject.toml`).
+  - `--python_path`: **Crucially**, you must provide the absolute path to the Python executable of the environment you want the AI to inspect. This could be your project's virtual environment.
 
 ### Server Parameters
 
 When configuring the MCP server in your AI environment, you can specify the following command-line arguments:
 
--   `--python_path`: Specifies the path to the Python executable of the environment where your target packages are installed. If not provided, it defaults to the Python executable running the server. You can find the correct path by activating your project's Python environment and running `which python` in your terminal.
--   `--logging_level`: Sets the logging level for the server. Options are `DEBUG`, `INFO`, `WARNING`, `ERROR`, `CRITICAL`. The default is `INFO`.
+- `--python_path`: Specifies the path to the Python executable of the environment where your target packages are installed. If not provided, it defaults to the Python executable running the server. You can find the correct path by activating your project's Python environment and running `which python` in your terminal.
+- `--logging_level`: Sets the logging level for the server. Options are `DEBUG`, `INFO`, `WARNING`, `ERROR`, `CRITICAL`. The default is `INFO`.
 
 If you use a Python virtual environment to configure a Python project, generally, you need to modify the python_path at any time to switch to the Python environment you specified.
 
@@ -85,44 +86,6 @@ This time, I created a Trae Agent, which is equipped with the mcp-server of this
 ### Testing with a Client
 
 If you want to test the server or understand its capabilities, you can use a client like `fastmcp`. The code in `examples/fastmcp_client.py` demonstrates how to connect to and call the server's tools.
-
-```python:examples/fastmcp_client.py
-import sys
-import asyncio
-from fastmcp import Client
-from fastmcp.client.transports import UvxStdioTransport
-
-
-# This transport assumes the server is installed from a git repository
-# and can be run via `uvx`.
-transport = UvxStdioTransport(
-    from_package="git+https://github.com/zakahan/pypreader-mcp.git",
-    tool_name="pypreader-mcp",
-    env_vars={
-        "python_path": sys.executable, # Tell the server to inspect the current python env
-        "logging_level": "ERROR",
-    },
-)
-
-
-async def main():
-    async with Client(transport) as client:
-        print("> 1. Listing available tools...")
-        tools = await client.list_tools()
-        for tool in tools:
-            print(f"- {tool.name}")
-
-        print("\n> 2. Getting directory for 'fastmcp' package...")
-        result = await client.call_tool(
-            name="get_package_directory", arguments={"package_name": "fastmcp"}
-        )
-        print(result)
-
-
-if __name__ == "__main__":
-    asyncio.run(main())
-
-```
 
 ## Development
 

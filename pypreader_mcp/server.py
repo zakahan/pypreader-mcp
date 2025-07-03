@@ -75,9 +75,9 @@ def check_python_path() -> str:
     return args.python_path
 
 
-def get_site_packages_path(python_path_path: str) -> str:
+def get_site_packages_path(python_path: str) -> str:
     site_packages_path = subprocess.run(
-        [python_path_path, "-c", "import site; print(site.getsitepackages()[0])"],
+        [python_path, "-c", "import site; print(site.getsitepackages()[0])"],
         capture_output=True,
         text=True,
         check=True,
@@ -86,8 +86,11 @@ def get_site_packages_path(python_path_path: str) -> str:
 
 
 check_python_path()
-SITE_PACKAGE_PATH = get_site_packages_path(args.python_path)
 
+PYTHON_PATH = args.python_path  # target python path
+SITE_PACKAGE_PATH = get_site_packages_path(PYTHON_PATH)  # target site-packages path
+
+PYP_READER_MCP_DIR_PATH = os.path.dirname(os.path.abspath(__file__))
 
 mcp = FastMCP(
     "Python Package Reader MCP Server 🥳",
@@ -131,7 +134,7 @@ def get_package_directory(package_name: str) -> str:
 
 
 @mcp.tool
-def get_source_code(package_path: str):
+def get_source_code(package_path: str) -> str:
     """
     Get the source code of the specified file to obtain more detailed and specific information.
     Args:
@@ -145,6 +148,33 @@ def get_source_code(package_path: str):
 
     with open(path, "r", encoding="utf-8") as f:
         return f.read()
+
+
+@mcp.tool
+def get_symbol_definition(package_name: str, symbol_name: str) -> str:
+    """
+    Obtain the definition of a specified symbol in a specified package,
+    through the method of ast analysis. The symbol can be a function or a class.
+    Args:
+        package_name: The name of the package, such as `requests`.
+        symbol_name: The name of the symbol, it could be a function or a class, such as `get` or `Session`.
+    Returns:
+        str: The definition of the symbol a string of code.
+    """
+    symbol_name = symbol_name.strip()
+    code = subprocess.run(
+        [
+            PYTHON_PATH,
+            os.path.join(PYP_READER_MCP_DIR_PATH, "find_definition.py"),
+            "--package_name",
+            package_name,
+            "--symbol_name",
+            symbol_name,
+        ],
+        capture_output=True,
+        text=True,
+    )
+    return code.stdout.strip()
 
 
 def main() -> None:

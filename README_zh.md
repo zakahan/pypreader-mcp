@@ -13,7 +13,7 @@
 
 ### 为啥做了这个东西？
 
-当我使用集成了 AI 的编程 IDE，如 Cursor 或 Trae 时，我总是发现当前使用的模型不知道我需要的第三方库。有时他们会很认真的生成一堆不可名状的东西，有时候它们回去互联网搜索时，但基本上结果都是不咋地，很难找到任何有用的信息。
+当我使用集成了 AI 的编程 IDE，如 Cursor 或 Trae 时，我总是发现当前使用的模型不知道我需要的第三方库。有时他们会很认真的生成一堆不可名状的东西，有时候它们会去互联网搜索时，但基本上结果都是不咋地，很难找到任何有用的信息。
 
 所以我制作了这个 MCP 服务。它可以从官方网站 pypi.org 读取文档，或者读取你 Python 对应的 site-packages 环境中的源代码，以便更直接地了解你想使用的第三方库的内容。
 
@@ -24,6 +24,7 @@
 - `get_pypi_description(package_name: str)`：从 PyPI 获取包的官方描述。
 - `get_package_directory(package_name: str)`：列出指定已安装包的整个文件和目录结构。
 - `get_source_code(package_path: str)`：检索包内特定文件的完整源代码。
+- `get_symbol_definition(package_path: str, symbol_name: str)`：获取指定符号（函数、类等）的定义（代码段）。
 
 ## 用法
 
