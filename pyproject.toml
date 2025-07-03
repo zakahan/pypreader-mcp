@@ -16,3 +16,7 @@ pypreader-mcp = "pypreader_mcp.server:main"
 dev = [
     "pre-commit>=4.2.0",
 ]
+
+[tool.setuptools.packages.find]
+include = ["pypreader_mcp*"]
+exclude = ["assets*"]
