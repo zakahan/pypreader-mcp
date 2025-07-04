@@ -23,8 +23,8 @@ The server provides the following tools to an MCP client:
 
 - `get_pypi_description(package_name: str)`: Fetches the official description of a package from PyPI.
 - `get_package_directory(package_name: str)`: Lists the entire file and directory structure of a specified installed package.
-- `get_source_code(package_path: str)`: Retrieves the full source code of a specific file within a package.
-- `get_symbol_definition(package_path: str, symbol_name: str)`: Get the definition (code segment) of the specified symbol (function, class, etc.).
+- `get_source_code_by_path(package_path: str)`: Retrieve the complete source code of a specific file within the package.
+- `get_source_code_by_symbol(package_path: str, symbol_name: str)`: Obtain the definition (code segment) of the specified symbol (function, class, etc.).
 
 ## Usage
 
@@ -117,3 +117,7 @@ If you want to test the server or understand its capabilities, you can use a cli
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
+### What's New Now?
+
+- 2025-07-04: Rewrote the `get_source_code_by_symbol` tool, fixing the issue of not being able to read classes or functions belonging to sub-packages.

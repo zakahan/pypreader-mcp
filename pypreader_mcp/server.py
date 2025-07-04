@@ -134,7 +134,7 @@ def get_package_directory(package_name: str) -> str:
 
 
 @mcp.tool
-def get_source_code(package_path: str) -> str:
+def get_source_code_by_path(package_path: str) -> str:
     """
     Get the source code of the specified file to obtain more detailed and specific information.
     Args:
@@ -151,10 +151,11 @@ def get_source_code(package_path: str) -> str:
 
 
 @mcp.tool
-def get_symbol_definition(package_name: str, symbol_name: str) -> str:
+def get_source_code_by_symbol(package_name: str, symbol_name: str) -> str:
     """
-    Obtain the definition of a specified symbol in a specified package,
-    through the method of ast analysis. The symbol can be a function or a class.
+    Obtain the source code of a specified symbol in a specified package,
+    The symbol can be a function or a class.
+    Compared with `get_source_code_by_path`, this tool can locate the specified symbol code segment more accurately.
     Args:
         package_name: The name of the package, such as `requests`.
         symbol_name: The name of the symbol, it could be a function or a class, such as `get` or `Session`.
@@ -165,14 +166,17 @@ def get_symbol_definition(package_name: str, symbol_name: str) -> str:
     code = subprocess.run(
         [
             PYTHON_PATH,
-            os.path.join(PYP_READER_MCP_DIR_PATH, "find_definition.py"),
+            os.path.join(PYP_READER_MCP_DIR_PATH, "find_symbol.py"),
             "--package_name",
             package_name,
             "--symbol_name",
             symbol_name,
+            "--logging_level",
+            args.logging_level,
         ],
         capture_output=True,
         text=True,
+        check=True,
     )
     return code.stdout.strip()
 

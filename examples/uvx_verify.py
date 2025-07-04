@@ -25,9 +25,9 @@ async def main():
             name="get_package_directory", arguments={"package_name": "fastmcp"}
         )
         print(result)
-        print("> 3. get_symbol_definition:")
+        print("> 3. get_source_code_by_symbol:")
         result = await client.call_tool(
-            name="get_symbol_definition",
+            name="get_source_code_by_symbol",
             arguments={"package_name": "mcp.types", "symbol_name": "CallToolResult"},
         )
         print(result)

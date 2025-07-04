@@ -23,8 +23,8 @@
 
 - `get_pypi_description(package_name: str)`：从 PyPI 获取包的官方描述。
 - `get_package_directory(package_name: str)`：列出指定已安装包的整个文件和目录结构。
-- `get_source_code(package_path: str)`：检索包内特定文件的完整源代码。
-- `get_symbol_definition(package_path: str, symbol_name: str)`：获取指定符号（函数、类等）的定义（代码段）。
+- `get_source_code_by_path(package_path: str)`：检索包内特定文件的完整源代码。
+- `get_source_code_by_symbol(package_path: str, symbol_name: str)`：获取指定符号（函数、类等）的定义（代码段）。
 
 ## 用法
 
@@ -117,3 +117,7 @@
 ## 许可证
 
 本项目采用 MIT 许可证。有关详细信息，请参阅 [LICENSE](LICENSE) 文件。
+
+### What's New Now?
+
+- 2025-07-04: 重写了`get_source_code_by_symbol`工具，修复了无法读取子package所属的类或函数的问题。
