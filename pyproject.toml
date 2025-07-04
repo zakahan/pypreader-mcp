@@ -14,9 +14,13 @@ pypreader-mcp = "pypreader_mcp.server:main"
 
 [dependency-groups]
 dev = [
+    "i18n-readme",
     "pre-commit>=4.2.0",
 ]
 
 [tool.setuptools.packages.find]
 include = ["pypreader_mcp*"]
 exclude = ["assets*"]
+
+[tool.uv.sources]
+i18n-readme = { git = "https://github.com/zakahan/i18n-readme" }
