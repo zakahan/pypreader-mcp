@@ -44,10 +44,12 @@
       "args": [
         "--from",
         "git+https://github.com/zakahan/pypreader-mcp.git",
-        "pypreader-mcp",
-        "--python_path",
-        "/path/to/your/project/.venv/bin/python" 
-      ]
+        "pypreader-mcp"
+      ],
+      "env": {
+        "CURRENT_PYTHON_PATH": "<your-python-path>",
+        "CURRENT_LOGGING_LEVEL": "INFO"
+      }
     }
   }
 }
@@ -55,10 +57,10 @@
 
 ### MCP-Server参数
 
-在你的 AI 环境中配置 MCP Server时，你可以指定以下命令行参数：
+在你的 AI 环境中配置 MCP Server时，你可以指定以下env参数：
 
-- `--python_path`：指定目标包安装环境的 Python 可执行文件的路径。如果未提供，它将默认为运行Server的 Python 可执行文件。你可以通过激活项目的 Python 环境并在终端中运行 `which python` 来找到正确的路径。
-- `--logging_level`：设置Server的日志记录级别。选项有 `DEBUG`、`INFO`、`WARNING`、`ERROR`、`CRITICAL`。默认值是 `INFO`。
+- `CURRENT_PYTHON_PATH`：指定目标包安装环境的 Python 可执行文件的路径。如果未提供，它将默认为运行Server的 Python 可执行文件。你可以通过激活项目的 Python 环境并在终端中运行 `which python` 来找到正确的路径。
+- `CURRENT_LOGGING_LEVEL`：设置Server的日志记录级别。选项有 `DEBUG`、`INFO`、`WARNING`、`ERROR`、`CRITICAL`。默认值是 `INFO`。
 
 如果你使用 Python 虚拟环境来配置 Python 项目，通常，你需要随时修改 `python_path`，以切换到你指定的 Python 环境。
 
