@@ -1,4 +1,5 @@
 import os
+import sys
 import time
 import asyncio
 from fastmcp import Client
@@ -11,6 +12,10 @@ transport = StdioTransport(
         "pypreader_mcp.server",
     ],
     cwd=os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+    env={
+        "CURRENT_PYTHON_PATH": sys.executable,
+        "CURRENT_LOGGING_LEVEL": "ERROR",
+    },
 )
 
 

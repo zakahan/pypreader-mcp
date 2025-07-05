@@ -8,8 +8,8 @@ transport = UvxStdioTransport(
     from_package="git+https://github.com/zakahan/pypreader-mcp.git",
     tool_name="pypreader-mcp",
     env_vars={
-        "python_path": sys.executable,
-        "logging_level": "ERROR",
+        "CURRENT_PYTHON_PATH": sys.executable,
+        "CURRENT_LOGGING_LEVEL": "ERROR",
     },
 )
 

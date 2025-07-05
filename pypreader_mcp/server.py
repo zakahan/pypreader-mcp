@@ -1,62 +1,45 @@
-import re
+import os
 import sys
-import argparse
-import os.path
-import subprocess
+import re
 import logging
-
+import subprocess
 import requests
 from fastmcp import FastMCP
+
 from pypreader_mcp.utils import get_package_path, list_directory_contents
 
-arg_parser = argparse.ArgumentParser(description="MCP Server")
-arg_parser.add_argument(
-    "--python_path",
-    type=str,
-    default=sys.executable,
-    help="The path of the Python environment where your target project is located. You can view and obtain it by entering `which python` in the project path (when the Python environment is activated).",
-)
-arg_parser.add_argument(
-    "--logging_level",
-    type=str,
-    default="INFO",
-    choices=["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"],
-    help="Logging level for the server.",
-)
-
-args = arg_parser.parse_args()
-
+CURRENT_PYTHON_PATH = os.getenv("CURRENT_PYTHON_PATH", sys.executable)
+LOGGING_LEVEL = os.getenv("CURRENT_LOGGING_LEVEL", "INFO")
 
 # Configure logging
 logging.basicConfig(
-    level=getattr(logging, args.logging_level),
+    level=getattr(logging, LOGGING_LEVEL),
     format="pypreader-mcp: %(levelname)s - %(message)s",
 )
 
-
 # Check if the default value is used
-if args.python_path == sys.executable:
-    logging.info(f"Using default Python path: {args.python_path}")
+if CURRENT_PYTHON_PATH == sys.executable:
+    logging.info(f"Using default Python path: {CURRENT_PYTHON_PATH}")
 
 
 def check_python_path() -> str:
     """
     Check if the Python environment is valid.
     """
-    if not os.path.exists(args.python_path):
+    if not os.path.exists(CURRENT_PYTHON_PATH):
         raise ValueError(
-            f"Python environment not found: {args.python_path}. Please check the path."
+            f"Python environment not found: {CURRENT_PYTHON_PATH}. Please check the path."
         )
 
     # Check if the file is executable
-    if not os.access(args.python_path, os.X_OK):
+    if not os.access(CURRENT_PYTHON_PATH, os.X_OK):
         raise PermissionError(
-            f"The file {args.python_path} is not executable. Please check the file permissions."
+            f"The file {CURRENT_PYTHON_PATH} is not executable. Please check the file permissions."
         )
 
     try:
         result = subprocess.run(
-            [args.python_path, "-V"],
+            [CURRENT_PYTHON_PATH, "-V"],
             capture_output=True,
             text=True,
             check=True,
@@ -65,14 +48,14 @@ def check_python_path() -> str:
         output = result.stdout.strip() or result.stderr.strip()
         if not re.match(r"Python \d+\.\d+\.\d+", output):
             raise ValueError(
-                f"The file {args.python_path} does not appear to be a valid Python executable."
+                f"The file {CURRENT_PYTHON_PATH} does not appear to be a valid Python executable."
             )
     except subprocess.CalledProcessError as e:
         raise ValueError(
-            f"Failed to execute {args.python_path} as a Python executable: {e}"
+            f"Failed to execute {CURRENT_PYTHON_PATH} as a Python executable: {e}"
         )
 
-    return args.python_path
+    return CURRENT_PYTHON_PATH
 
 
 def get_site_packages_path(python_path: str) -> str:
@@ -87,7 +70,7 @@ def get_site_packages_path(python_path: str) -> str:
 
 check_python_path()
 
-PYTHON_PATH = args.python_path  # target python path
+PYTHON_PATH = CURRENT_PYTHON_PATH  # target python path
 SITE_PACKAGE_PATH = get_site_packages_path(PYTHON_PATH)  # target site-packages path
 
 PYP_READER_MCP_DIR_PATH = os.path.dirname(os.path.abspath(__file__))
@@ -128,8 +111,8 @@ def get_package_directory(package_name: str) -> str:
     try:
         package_path = get_package_path(package_name, SITE_PACKAGE_PATH)
         package_content = list_directory_contents(package_path)
-    except ImportError:
-        return f"Package `{package_name}` is not installed. Please install it first."
+    except Exception as e:
+        return f"Package `{package_name}` is not installed. Please install it first. Error detail: {e.__class__.__name__}: {e}"
     return "\n".join(package_content)
 
 
@@ -172,7 +155,7 @@ def get_source_code_by_symbol(package_name: str, symbol_name: str) -> str:
             "--symbol_name",
             symbol_name,
             "--logging_level",
-            args.logging_level,
+            LOGGING_LEVEL,
         ],
         capture_output=True,
         text=True,
