@@ -1,6 +1,6 @@
 # pypreader-mcp
 
-[English](./README.md) | [Simplified Chinese](./README_zh.md)
+[English](./README.md) | [简体中文](./README_zh.md)
 
 [![Python Version](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -39,7 +39,7 @@ In the MCP Server configuration of your AI environment, add a new Server with th
 ```json
 {
   "mcpServers": {
-    "PypReader": {
+    "PypReader-MCP": {
       "command": "uvx",
       "args": [
         "--from",

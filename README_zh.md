@@ -39,7 +39,7 @@
 ```json
 {
   "mcpServers": {
-    "PypReader": {
+    "PypReader-MCP": {
       "command": "uvx",
       "args": [
         "--from",
