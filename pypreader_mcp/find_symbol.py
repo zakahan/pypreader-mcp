@@ -28,6 +28,12 @@ arg_parser.add_argument(
     help="Logging level for the server.",
 )
 
+arg_parser.add_argument(
+    "--output_path",
+    type=str,
+    help="Path to write the output"
+)
+
 args = arg_parser.parse_args()
 
 
@@ -144,4 +150,5 @@ def find_symbol(package_name: str, symbol_name: str) -> str:
 
 if __name__ == "__main__":
     result = find_symbol(args.package_name, args.symbol_name)
-    print(result)
+    with open(args.output_path, "w") as f:
+        f.write(result)

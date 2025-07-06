@@ -152,22 +152,33 @@ def get_source_code_by_symbol(package_name: str, symbol_name: str) -> str:
         str: The definition of the symbol a string of code.
     """
     symbol_name = symbol_name.strip()
-    code = subprocess.run(
-        [
-            PYTHON_PATH,
-            os.path.join(PYP_READER_MCP_DIR_PATH, "find_symbol.py"),
-            "--package_name",
-            package_name,
-            "--symbol_name",
-            symbol_name,
-            "--logging_level",
-            LOGGING_LEVEL,
-        ],
-        capture_output=True,
-        text=True,
-        check=True,
-    )
-    return code.stdout.strip()
+    output_path = os.path.join(os.path.abspath(os.path.dirname(__file__)),"output.txt")
+
+    cmd = [
+        PYTHON_PATH,
+        os.path.join(PYP_READER_MCP_DIR_PATH, "find_symbol.py"),
+        "--package_name", package_name,
+        "--symbol_name", symbol_name,
+        "--logging_level", LOGGING_LEVEL,
+        "--output_path", output_path,
+    ]
+
+    # For Windows platform compatible
+    # Key points: Close stdin, stdout, and stderr to prevent inheritance and blocking
+    with open(os.devnull, 'w') as devnull:
+        result = subprocess.run(
+            cmd,
+            stdin=devnull,
+            stdout=devnull,  # close stdout
+            stderr=subprocess.PIPE,  # Optional: Record error information
+            check=True,
+        )
+
+    try:
+        with open(output_path, 'r', encoding='utf-8') as f:
+            return f.read().strip()
+    except FileNotFoundError:
+        return f"Error: Output file not found. stderr: {result.stderr.decode()}"
 
 
 def main() -> None:
