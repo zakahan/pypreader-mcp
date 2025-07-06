@@ -51,7 +51,7 @@ Follow these guidelines regarding tool calls
 ## pypreader-mcp-toolset
 ### introduction
 
-You have a set of MCP tools named `PypReader`. This toolset is specifically optimized for Python packages. You can use these tools to read information about Python packages on PyPI, or to read source code and perform other operations. When a user asks you to use a Python package that you are not familiar with, you can use these tools to help you better understand the information about the Python package, or to help you better understand the source code of the Python package.
+You have a set of MCP tools named `PypReader-MCP`. This toolset is specifically optimized for Python packages. You can use these tools to read information about Python packages on PyPI, or to read source code and perform other operations. When a user asks you to use a Python package that you are not familiar with, you can use these tools to help you better understand the information about the Python package, or to help you better understand the source code of the Python package.
 
 ### usage-scenarios
 
@@ -67,4 +67,4 @@ You have a set of MCP tools named `PypReader`. This toolset is specifically opti
 
 ### Very important reminder
 1. When your code calls a certain function, but you don't know the structure of its return value, don't jump to conclusions like "the payload field is `.text`". Please use `get_source_code_by_symbol` to query the structure of the return value. Especially when there is already an error, if you make things up, the user will be extremely angry.
-2. When you need to use some package which you don't know, use `PypReader` to check the package message first, before web-search.
+2. When you need to use some package which you don't know, use `PypReader-MCP` to check the package message first, before web-search.
