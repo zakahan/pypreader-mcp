@@ -59,13 +59,19 @@ def check_python_path() -> str:
 
 
 def get_site_packages_path(python_path: str) -> str:
-    site_packages_path = subprocess.run(
-        [python_path, "-c", "import site; print(site.getsitepackages()[0])"],
+    cmd = [
+        python_path,
+        "-c",
+        "import sysconfig; print(sysconfig.get_path('purelib'))"
+    ]
+    result = subprocess.run(
+        cmd,
         capture_output=True,
         text=True,
         check=True,
     )
-    return site_packages_path.stdout.strip()
+    return result.stdout.strip()
+
 
 
 check_python_path()

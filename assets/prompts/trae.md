@@ -67,3 +67,4 @@ You have a set of MCP tools named `PypReader`. This toolset is specifically opti
 
 ### Very important reminder
 1. When your code calls a certain function, but you don't know the structure of its return value, don't jump to conclusions like "the payload field is `.text`". Please use `get_source_code_by_symbol` to query the structure of the return value. Especially when there is already an error, if you make things up, the user will be extremely angry.
+2. When you need to use some package which you don't know, use `PypReader` to check the package message first, before web-search.
