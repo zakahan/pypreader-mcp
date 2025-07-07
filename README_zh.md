@@ -85,6 +85,7 @@
 
 ### What's New Now?
 
+- 2025-07-06: 重写了`get_source_code_by_symbol`，以读写临时文件代替stdio，以支持windows平台。
 - 2025-07-04: 重写了`get_source_code_by_symbol`工具，修复了无法读取子package所属的类或函数的问题。
 
 

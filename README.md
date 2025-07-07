@@ -85,6 +85,7 @@ This project is licensed under the MIT License. For details, please refer to the
 
 ### What's New Now?
 
+- 2025-07-06: Rewrote `get_source_code_by_symbol` to use reading and writing temporary files instead of stdio to support the Windows platform.
 - 2025-07-04: Rewrote the `get_source_code_by_symbol` tool to fix the issue where it couldn't read classes or functions belonging to sub-packages.
 
 
