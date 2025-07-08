@@ -14,8 +14,12 @@ pypreader-mcp = "pypreader_mcp.server:main"
 
 [dependency-groups]
 dev = [
+    "anyio>=4.9.0",
     "i18n-readme",
     "pre-commit>=4.2.0",
+    "pytest>=8.4.1",
+    "pytest-asyncio>=1.0.0",
+    "pytest-tornasync>=0.6.0.post2",
 ]
 
 [tool.setuptools.packages.find]
